@@ -8,20 +8,21 @@ from web3 import Web3
 ganache_url = "http://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
 
-NODE_IP = "192.168.68.115"
-NODE_PORT = 8000
+# Node configuration
+NODE_IP = "10.113.9.82"
+NODE_PORT = 8001
 
-PRIVATE_KEY = "0xd97e5fa214de1b012xxxxxxxxxxxxxxxxxxxxx"
-ADDRESS = web3.to_checksum_address("0x9e09CE04c2xxxxxxxxxxxxxx")
+PRIVATE_KEY = "0xbb87e52886e70ef14f333355163cd753acc354cb93de6905fee7abeca79f168f"
+ADDRESS = web3.to_checksum_address("0x523C1432E254A19347A88e4cc709b4e0b4c77E75")
 
 PEERS = [
-    {"ip": "xxxxxxxxx", "port": 8001},  # Node A
-    {"ip": "xxxxxxxxx", "port": 8002}   # Node C
+    {"ip": "10.113.16.73", "port": 8000},  # Node A
+    {"ip": "192.168.68.110", "port": 8002}   # Node C
 ]
 
 transactions = []
 
-CONTRACT_ADDRESS = "0xa131AD247055FD2e2aA8b156A11bdEc81b9eAD95"
+CONTRACT_ADDRESS = "0xaE036c65C649172b43ef7156b009c6221B596B8b"
 
 # ABI for TransactionLogger contract
 CONTRACT_ABI = json.loads("""[
@@ -181,7 +182,7 @@ CONTRACT_ABI = json.loads("""[
 		"stateMutability": "view",
 		"type": "function"
 	}
-]""")  # Use the same ABI you already posted
+]""")  
 
 # Create contract instance
 contract = web3.eth.contract(address=CONTRACT_ADDRESS, abi=CONTRACT_ABI)
@@ -256,7 +257,7 @@ def send_transaction(to_address, eth_amount, token_amount):
 
         # Sign and send the transaction
         signed_txn = web3.eth.account.sign_transaction(txn, PRIVATE_KEY)
-        tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_tansaction)
+        tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
 
         print(f"[{NODE_IP}] Sent Contract TX Hash: {web3.to_hex(tx_hash)}")
 
@@ -276,31 +277,14 @@ def send_transaction(to_address, eth_amount, token_amount):
     except Exception as e:
         print(f"Error sending transaction: {str(e)}")
 
-# ----------------------------------------------
-# View balances on-chain
-def view_balances():
-    try:
-        # Get balance of your address
-        token_balance = contract.functions.balanceOf(ADDRESS).call()
-        eth_balance = web3.eth.get_balance(ADDRESS)
 
-        print(f"\n[{NODE_IP}] Address: {ADDRESS}")
-        print(f"Token Balance: {token_balance}")
-        print(f"ETH Balance: {web3.from_wei(eth_balance, 'ether')} ETH")
-
-    except Exception as e:
-        print(f"Error fetching balances: {str(e)}")
-
-# ----------------------------------------------
-# MAIN
 if __name__ == '__main__':
     threading.Thread(target=start_server).start()
 
     while True:
         print("\n1. Send Transaction (Smart Contract)")
         print("2. View Transactions (Local Ledger)")
-        print("3. View Balances (On Chain)")
-        print("4. Exit")
+        print("3. Exit")
         choice = input("Enter choice: ")
 
         if choice == "1":
@@ -315,18 +299,8 @@ if __name__ == '__main__':
                 print(tx)
 
         elif choice == "3":
-            print("\n[On-Chain Balances]")
-            view_balances()
-
-        elif choice == "4":
             print("Exiting...")
             break
-
-        else:
-            print("Invalid choice. Try again.")
-
-
-
 
 
 
