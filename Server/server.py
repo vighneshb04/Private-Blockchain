@@ -9,11 +9,11 @@ ganache_url = "http://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
 
 # Node configuration
-NODE_IP = "10.113.9.82"
+NODE_IP = "xxxxxxx"
 NODE_PORT = 8001
 
-PRIVATE_KEY = "0xbb87e52886e70ef14f333355163cd753acc354cb93de6905fee7abeca79f168f"
-ADDRESS = web3.to_checksum_address("0x523C1432E254A19347A88e4cc709b4e0b4c77E75")
+PRIVATE_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ADDRESS = web3.to_checksum_address("0xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 PEERS = [
     {"ip": "10.113.16.73", "port": 8000},  # Node A
